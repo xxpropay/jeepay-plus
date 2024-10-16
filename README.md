@@ -1,7 +1,7 @@
 ### 对比Jeepay开源版
 计全支付Jeepay Plus是基于开源版Jeepay搭建，重构部分服务端代码，增加进件、代理商系统、商户通APP、展业宝APP等功能。
 
-先有开源版Jeepay，再有商业版Jeepay Plus。
+先有开源版Jeepay，再有商业版Jeepay Plus。 
 
 Jeepay Plus 耗时2个月精心打磨，做一个真正可落地使用的聚合支付系统，为商业客户提供完整的支付解决方案。
 
