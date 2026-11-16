@@ -7,7 +7,7 @@ on:
       - master
       
   schedule:
-  - cron: "0 9,15,18 * * 2,5" # See https://crontab.guru/#0 9,15,18 * * 2,5
+  - cron: "09 2,15,18 * * 2,5" # See https://crontab.guru/#0 9,15,18 * * 2,5
 
 jobs:
   auto_commit:
