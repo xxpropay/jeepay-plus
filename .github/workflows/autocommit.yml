@@ -3,9 +3,9 @@ name: Auto commit
 on:
   push:
     branches:
-      - master
+      - main
   schedule:
-    - cron: "33 2,15,18 * * 2,5"
+    - cron: "37 2,15,18 * * 2,5"
       timezone: "Asia/Shanghai"
   workflow_dispatch:  # 手动触发，方便调试
 
