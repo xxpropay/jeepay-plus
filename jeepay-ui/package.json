@@ -1,0 +1,26 @@
+{
+  "name": "jeepay-ui",
+  "version": "2.0.0",
+  "description": "Jeepay 前端项目 - 包括运营平台、商户系统、聚合码收银台",
+  "private": true,
+  "workspaces": [
+    "jeepay-ui-cashier",
+    "jeepay-ui-manager",
+    "jeepay-ui-merchant"
+  ],
+  "scripts": {
+    "dev:cashier": "cd jeepay-ui-cashier && npm run dev",
+    "dev:manager": "cd jeepay-ui-manager && npm run dev",
+    "dev:merchant": "cd jeepay-ui-merchant && npm run dev",
+    "build:cashier": "cd jeepay-ui-cashier && npm run build",
+    "build:manager": "cd jeepay-ui-manager && npm run build",
+    "build:merchant": "cd jeepay-ui-merchant && npm run build",
+    "build": "npm run build:cashier && npm run build:manager && npm run build:merchant",
+    "check": "npm run build"
+  },
+  "engines": {
+    "node": ">=20 <23"
+  },
+  "author": "",
+  "license": "MIT"
+}

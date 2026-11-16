@@ -17,6 +17,7 @@ package com.jeequan.jeepay.core.model.params;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 
 /*
  * 抽象类 特约商户参数定义
@@ -25,6 +26,7 @@ import com.alibaba.fastjson.JSONObject;
  * @site https://www.jeequan.com
  * @date 2021/6/8 16:33
  */
+@Slf4j
 public abstract class IsvsubMchParams {
 
     public static IsvsubMchParams factory(String ifCode, String paramsStr){
@@ -32,7 +34,7 @@ public abstract class IsvsubMchParams {
         try {
             return (IsvsubMchParams)JSONObject.parseObject(paramsStr, Class.forName(IsvsubMchParams.class.getPackage().getName() +"."+ ifCode +"."+ StrUtil.upperFirst(ifCode) +"IsvsubMchParams"));
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.error("Invalid ISV sub-merchant parameter JSON", e);
         }
         return null;
     }

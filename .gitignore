@@ -42,6 +42,10 @@ rebel.xml
 # [npm包管理依赖]
 node_modules/
 
+# [本机环境变量]
+.env
+!.env.example
+
 # [dist目录]
 dist/
 
@@ -50,6 +54,9 @@ unpackage/
 
 # [vscode IDE]
 .vscode/
+
+# [Codex isolated worktrees]
+.worktrees/
 
 # [mac]
 .DS_Store

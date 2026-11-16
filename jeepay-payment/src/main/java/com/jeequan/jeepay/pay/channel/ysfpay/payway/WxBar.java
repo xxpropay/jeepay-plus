@@ -62,7 +62,7 @@ public class WxBar extends YsfpayPaymentService {
         reqParams.put("authCode", bizRQ.getAuthCode().trim()); //付款码： 用户 APP 展示的付款条码或二维码
 
         // 云闪付 bar 统一参数赋值
-        barParamsSet(reqParams, payOrder);
+        barParamsSet(reqParams, payOrder, mchAppConfigContext);
 
         //客户端IP
         reqParams.put("termInfo", "{\"ip\": \""+StringUtils.defaultIfEmpty(payOrder.getClientIp(), "127.0.0.1")+"\"}"); //终端信息

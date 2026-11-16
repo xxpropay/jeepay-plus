@@ -1,3 +1,20 @@
+# Jeepay Plus
+
+## 本地构建与部署
+
+环境要求：Java 17、Node.js 20、Docker Compose、PowerShell 7（配置检查）。本仓库只使用 ActiveMQ，前后端源码均由同一 Git 仓库管理。
+
+```bash
+cp .env.example .env
+# 修改 .env 中全部 replace-with-* 值，并为两个 JWT 密钥设置至少 32 字节随机值
+./mvnw clean test
+npm --prefix jeepay-ui install
+npm --prefix jeepay-ui run build
+docker compose --env-file .env up --build
+```
+
+提交前可运行 `scripts/verify-deployment.ps1` 与 `scripts/verify-security.ps1`。生产环境必须配置精确的 `JEEPAY_CORS_ALLOWED_ORIGINS`，不得使用 `*`。
+
 ### 对比Jeepay开源版
 JeepayPro是基于开源版Jeepay搭建，重构部分服务端代码，增加进件、代理商系统、商户通APP、展业宝APP等功能。
 
@@ -60,8 +77,8 @@ JeePayPro是一套开箱即用、适合拿来直接运营的聚合支付系统�
 <tr>
 <td></td>
 <td>Mq</td>
-<td>activemq/rockmq/rabbitmq</td>
-<td>activemq/rockmq/rabbitmq</td>
+<td>ActiveMQ</td>
+<td>ActiveMQ</td>
 </tr>
 <tr>
 <td></td>

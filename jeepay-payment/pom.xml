@@ -6,7 +6,7 @@
     <groupId>com.jeequan</groupId> <!-- 组织名, 类似于包名 -->
     <artifactId>jeepay-payment</artifactId>  <!-- 项目名称 -->
     <packaging>jar</packaging> <!-- 项目的最终打包类型/发布形式, 可选[jar, war, pom, maven-plugin]等 -->
-    <version>${isys.version}</version> <!-- 项目当前版本号 -->
+    <version>2.4.0</version> <!-- 项目当前版本号 -->
     <description>Jeepay计全支付系统 [统一支付网关]</description> <!-- 项目描述 -->
     <url>https://www.jeequan.com</url>
 
@@ -23,6 +23,15 @@
 
     <!-- 项目依赖声明 -->
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- 依赖[ service ]包, 会自动传递依赖[ core ]包。  -->
         <dependency>
@@ -40,6 +49,10 @@
         <dependency>
             <groupId>com.jeequan</groupId>
             <artifactId>jeepay-components-mq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
         </dependency>
 
         <!-- 依赖 sping-boot-web -->
@@ -72,10 +85,10 @@
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
 
-        <!-- hibernate.validator插件 -->
+        <!-- Bean Validation -->
         <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
         <!-- 添加redis支持 -->
@@ -127,13 +140,12 @@
         <dependency>
             <groupId>com.jeequan</groupId>
             <artifactId>jeepay-sdk-java</artifactId>
-            <version>pls-1.3.0</version>
         </dependency>
 
         <!-- Knife4j  -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 

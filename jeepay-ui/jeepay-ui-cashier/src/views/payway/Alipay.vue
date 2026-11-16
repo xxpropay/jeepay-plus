@@ -1,0 +1,158 @@
+<template>
+  <div>
+    <header class="header">
+      <div class="header-text">付款给 {{ payOrderInfo.mchName }}</div>
+      <div class="header-img">
+        <img :src="avatar ? avatar : icon_member_default" alt="" />
+      </div>
+    </header>
+    <div class="plus-input">
+      <!-- ￥字符 货币的符号-->
+      <div class="S">
+        <img src="../../assets/icon/S.svg" alt="" />
+      </div>
+
+      <!-- 手写输入框 -->
+      <div  class="input-c" style="width: 100%">
+        <div  v-if="payOrderInfo.amount" class="input-c-div-1">{{ payOrderInfo.amount/100 }}</div>
+        <input type="number" style="height: 120px;" v-else v-model="amount" placeholder="请输入金额">
+      </div>
+      <!-- 手写输入框的提示文字 -->
+      <!-- <div v-show="!amount" class="placeholder">请输入金额</div> -->
+    </div>
+    <ul class="plus-ul" >
+      <!-- 支付板块 -->
+      <li style="border-radius:10px;">
+        <!-- 支付金额板块 -->
+        <div class="img-div">
+          <img :src="wxImg" alt="" />
+          <div class="div-text">
+            支付宝支付
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="bnt-pay">
+      <div
+        class="bnt-pay-text"
+        style="background-color:#1678ff"
+        @click="pay"
+      >
+        付款
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { getPayPackage, getPayOrderInfo } from '@/api/api'
+import config from "@/config"
+import zfbImg from "@/assets/images/zfb.jpeg"
+export default {
+
+  data: function (){
+    return {
+      merchantName: 'jeepay',
+      avatar: zfbImg,
+      amount: null,
+      resData : {},
+      wxImg: zfbImg,
+      payOrderInfo: {},
+      icon_member_default: zfbImg,
+    }
+  },
+
+  mounted() {
+     this.setPayOrderInfo(); //获取订单信息 & 调起支付插件
+  },
+
+  methods: {
+
+    setPayOrderInfo(){
+      const that = this
+      getPayOrderInfo().then(res => {
+        that.payOrderInfo = res
+
+        if(res.amount){
+          this.amount = res.amount / 100;
+          that.pay()
+        }
+      }).catch(res => {
+        that.$router.push({name: config.errorPageRouteName, params: {errInfo: res.msg}})
+      });
+    },
+
+    pay: function (){
+
+      if(isNaN(this.amount) || this.amount <= 0){
+        return alert('请输入金额');
+      }
+
+      // 后端 /api/cashier/pay 返回双层 ApiRes：外层由 HttpRequest 拦截器拆除，
+      // 这里 res 仍是内层 ApiRes 结构 { code, msg, data: { orderState, alipayTradeNo, ... } }
+      const that = this;
+      getPayPackage(this.amount).then(res => {
+
+        if (res.code !== 0) {
+          return alert(res.msg);
+        }
+
+        if (res.data.orderState !== 1) {
+          return alert(res.data.errMsg);
+        }
+
+        if (!window.AlipayJSBridge) {
+          document.addEventListener('AlipayJSBridgeReady', function(){
+            that.doAlipay(res.data.alipayTradeNo);
+          }, false);
+        }else{
+          that.doAlipay(res.data.alipayTradeNo);
+        }
+
+      }).catch(res => {
+        that.$router.push({name: config.errorPageRouteName, params: {errInfo: res.msg}})
+      });
+    },
+
+
+    doAlipay(alipayTradeNo){
+
+      const that = this
+
+      // eslint-disable-next-line no-undef
+      AlipayJSBridge.call("tradePay", {
+        tradeNO: alipayTradeNo
+      }, function (data) {
+        if (data.resultCode === "9000") {
+          // alert('支付成功！');
+
+          // //重定向
+          if(that.payOrderInfo.returnUrl){
+            location.href = that.payOrderInfo.returnUrl;
+          }else{
+            alert('支付成功！');
+            window.AlipayJSBridge.call('closeWebview')
+          }
+
+          //‘8000’：后台获取支付结果超时，暂时未拿到支付结果;
+        // ‘6004’：支付过程中网络出错， 暂时未拿到支付结果;
+        } else if (data.resultCode === "8000" || data.resultCode === "6004") { //其他
+
+          alert(JSON.stringify(data));
+          window.AlipayJSBridge.call('closeWebview')
+
+        }else{ ///其他异常信息， 需要取消订单
+          alert('用户已取消！');
+          window.AlipayJSBridge.call('closeWebview')
+        }
+      });
+    },
+
+  }
+
+
+}
+</script>
+<style lang="css" scoped>
+ @import './pay.css';
+</style>

@@ -134,10 +134,7 @@
             <!--  简单认证插件 -->
             <simpleAuthenticationPlugin>
                 <users>
-                    <authenticationUser username="test" password="test" groups="users,admins"/>
-                    <authenticationUser username="system" password="manager" groups="users,admins"/>
-                    <authenticationUser username="user" password="password" groups="users"/>
-                    <authenticationUser username="guest" password="password" groups="guests"/>
+                    <authenticationUser username="${activemq.username}" password="${activemq.password}" groups="users,admins"/>
                 </users>
             </simpleAuthenticationPlugin>
 

@@ -39,20 +39,18 @@ public class IsvInfoService extends ServiceImpl<IsvInfoMapper, IsvInfo> {
 
     @Autowired private MchInfoService mchInfoService;
 
-    @Autowired private IsvInfoService isvInfoService;
-
     @Autowired private PayInterfaceConfigService payInterfaceConfigService;
 
     @Transactional
     public void removeByIsvNo(String isvNo) {
         // 0.当前服务商是否存在
-        IsvInfo isvInfo = isvInfoService.getById(isvNo);
+        IsvInfo isvInfo = this.getById(isvNo);
         if (isvInfo == null) {
             throw new BizException("该服务商不存在");
         }
 
         // 1.查询当前服务商下是否存在商户
-        int mchCount = mchInfoService.count(MchInfo.gw().eq(MchInfo::getIsvNo, isvNo).eq(MchInfo::getType, CS.MCH_TYPE_ISVSUB));
+        long mchCount = mchInfoService.count(MchInfo.gw().eq(MchInfo::getIsvNo, isvNo).eq(MchInfo::getType, CS.MCH_TYPE_ISVSUB));
         if (mchCount > 0) {
             throw new BizException("该服务商下存在商户，不可删除");
         }
@@ -64,7 +62,7 @@ public class IsvInfoService extends ServiceImpl<IsvInfoMapper, IsvInfo> {
         );
 
         // 3.删除该服务商
-        boolean remove = isvInfoService.removeById(isvNo);
+        boolean remove = this.removeById(isvNo);
         if (!remove) {
             throw new BizException("删除服务商失败");
         }

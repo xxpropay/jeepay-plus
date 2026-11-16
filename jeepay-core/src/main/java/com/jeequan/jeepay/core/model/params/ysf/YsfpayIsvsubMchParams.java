@@ -30,4 +30,7 @@ public class YsfpayIsvsubMchParams extends IsvsubMchParams {
 
     private String merId;   // 商户编号
 
+    /** 云闪付分配给该特约商户的终端编号。 */
+    private String termId;
+
 }

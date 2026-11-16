@@ -20,6 +20,7 @@ import com.jeequan.jeepay.components.mq.vender.IMQSender;
 import com.jeequan.jeepay.core.entity.PayOrder;
 import com.jeequan.jeepay.pay.rqrs.msg.ChannelRetMsg;
 import com.jeequan.jeepay.pay.service.ChannelOrderReissueService;
+import com.jeequan.jeepay.pay.service.PayOrderCloseService;
 import com.jeequan.jeepay.service.impl.PayOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,8 @@ public class PayOrderReissueMQReceiver implements PayOrderReissueMQ.IMQReceiver 
     private PayOrderService payOrderService;
     @Autowired
     private ChannelOrderReissueService channelOrderReissueService;
+    @Autowired
+    private PayOrderCloseService payOrderCloseService;
 
 
     @Override
@@ -73,15 +76,18 @@ public class PayOrderReissueMQReceiver implements PayOrderReissueMQ.IMQReceiver 
                     mqSender.send(PayOrderReissueMQ.build(payOrderId, currentCount), 5); //延迟5s再次查询
                 }else{
 
-                    //TODO 调用【撤销订单】接口
+                    PayOrderCloseService.CloseResult closeResult = payOrderCloseService.close(payOrder);
+                    if (closeResult != PayOrderCloseService.CloseResult.CLOSED) {
+                        log.warn("Unresolved order could not be closed, payOrderId={}, ifCode={}, result={}",
+                                payOrderId, payOrder.getIfCode(), closeResult);
+                    }
 
                 }
 
             }else{ //其他状态， 不需要再次轮询。
             }
         }catch (Exception e) {
-            log.error(e.getMessage());
-            return;
+            log.error("Pay order reissue failed, payOrderId={}", payload.getPayOrderId(), e);
         }
     }
 }

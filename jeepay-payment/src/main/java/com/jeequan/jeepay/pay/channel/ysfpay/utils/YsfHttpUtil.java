@@ -15,6 +15,8 @@
  */
 package com.jeequan.jeepay.pay.channel.ysfpay.utils;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.alibaba.fastjson.JSON;
 import com.jeequan.jeepay.core.constants.CS;
 
@@ -44,6 +46,7 @@ import java.util.Map.Entry;
 * @site https://www.jeequan.com
 * @date 2021/6/8 17:25
 */
+@Slf4j
 public class YsfHttpUtil {
 
 	private static final String DEFAULT_CHARSET = "UTF-8";
@@ -141,21 +144,21 @@ public class YsfHttpUtil {
 					in.close();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("YSF HTTP request failed", e);
 			}
 			try {
 				if (out != null) {
 					out.close();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("YSF HTTP request failed", e);
 			}
 			try {
 				if (http != null) {
 					http.disconnect();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("YSF HTTP request failed", e);
 			}
 		}
 	}
@@ -184,21 +187,21 @@ public class YsfHttpUtil {
 					in.close();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("YSF HTTP request failed", e);
 			}
 			try {
 				if (out != null) {
 					out.close();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("YSF HTTP request failed", e);
 			}
 			try {
 				if (http != null) {
 					http.disconnect();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("YSF HTTP request failed", e);
 			}
 		}
 	}
@@ -390,7 +393,7 @@ public class YsfHttpUtil {
 				Path path = Paths.get(fileName);
 				contentType = Files.probeContentType(path);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("YSF HTTP response close failed", e);
 			}
 			if (contentType == null || contentType.isEmpty()) {
 				contentType = new MimetypesFileTypeMap().getContentType(fileName);

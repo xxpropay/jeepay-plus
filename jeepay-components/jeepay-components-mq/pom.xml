@@ -6,7 +6,7 @@
   <groupId>com.jeequan</groupId> <!-- 组织名, 类似于包名 -->
   <artifactId>jeepay-components-mq</artifactId>  <!-- 项目名称 -->
   <packaging>jar</packaging> <!-- 项目的最终打包类型/发布形式, 可选[jar, war, pom, maven-plugin]等 -->
-  <version>${isys.version}</version> <!-- 项目当前版本号 -->
+  <version>2.4.0</version> <!-- 项目当前版本号 -->
   <description>Jeepay计全支付系统 [jeepay-components-mq]</description> <!-- 项目描述 -->
   <url>https://www.jeequan.com</url>
 
@@ -26,8 +26,8 @@
     </dependency>
 
     <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>javax.annotation-api</artifactId>
+      <groupId>jakarta.annotation</groupId>
+      <artifactId>jakarta.annotation-api</artifactId>
       <scope>provided</scope> <!-- 仅编译依赖该jar， 运行时存在 -->
     </dependency>
 
@@ -49,27 +49,6 @@
       <groupId>org.messaginghub</groupId>
       <artifactId>pooled-jms</artifactId>
 <!--      <scope>provided</scope>-->
-    </dependency>
-
-    <!-- RabbitMQ  -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-amqp</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- RocketMQ -->
-    <dependency>
-      <groupId>org.apache.rocketmq</groupId>
-      <artifactId>rocketmq-spring-boot-starter</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- AliyunRocketMQ -->
-    <dependency>
-      <groupId>com.aliyun.openservices</groupId>
-      <artifactId>ons-client</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <!-- ↑↑↑↑↑↑ MQ依赖包 ↑↑↑↑↑↑ -->

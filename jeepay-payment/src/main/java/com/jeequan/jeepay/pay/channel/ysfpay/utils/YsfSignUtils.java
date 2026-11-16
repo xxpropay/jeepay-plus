@@ -15,6 +15,8 @@
  */
 package com.jeequan.jeepay.pay.channel.ysfpay.utils;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +39,7 @@ import java.util.TreeMap;
  * @site https://www.jeequan.com
  * @date 2021-06-07 07:15
  */
+@Slf4j
 public class YsfSignUtils {
 
     private static final String KEYSTORE_TYPE_PKCS12 = "PKCS12";  //私钥类型
@@ -275,7 +278,7 @@ public class YsfSignUtils {
                 try {
                     fis.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error("YSF signature field access failed", e);
                 }
             }
         }

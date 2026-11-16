@@ -18,14 +18,12 @@ package com.jeequan.jeepay.pay.ctrl.payorder;
 import com.jeequan.jeepay.core.entity.PayOrder;
 import com.jeequan.jeepay.core.exception.BizException;
 import com.jeequan.jeepay.core.model.ApiRes;
-import com.jeequan.jeepay.core.utils.SpringBeansUtil;
-import com.jeequan.jeepay.pay.channel.IPayOrderCloseService;
 import com.jeequan.jeepay.pay.ctrl.ApiController;
-import com.jeequan.jeepay.pay.model.MchAppConfigContext;
 import com.jeequan.jeepay.pay.rqrs.msg.ChannelRetMsg;
 import com.jeequan.jeepay.pay.rqrs.payorder.ClosePayOrderRQ;
 import com.jeequan.jeepay.pay.rqrs.payorder.ClosePayOrderRS;
 import com.jeequan.jeepay.pay.service.ConfigContextQueryService;
+import com.jeequan.jeepay.pay.service.PayOrderCloseService;
 import com.jeequan.jeepay.service.impl.PayOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +44,7 @@ public class CloseOrderController extends ApiController {
 
     @Autowired private PayOrderService payOrderService;
     @Autowired private ConfigContextQueryService configContextQueryService;
+    @Autowired private PayOrderCloseService payOrderCloseService;
 
     /**
      * @author: xiaoyu
@@ -80,42 +79,11 @@ public class CloseOrderController extends ApiController {
             return ApiRes.okWithSign(bizRes, configContextQueryService.queryMchApp(rq.getMchNo(), rq.getAppId()).getAppSecret());
         }
 
-        try {
-
-            String payOrderId = payOrder.getPayOrderId();
-
-            //查询支付接口是否存在
-            IPayOrderCloseService closeService = SpringBeansUtil.getBean(payOrder.getIfCode() + "PayOrderCloseService", IPayOrderCloseService.class);
-
-            // 支付通道接口实现不存在
-            if(closeService == null){
-                log.error("{} interface not exists!", payOrder.getIfCode());
-                return null;
-            }
-
-            //查询出商户应用的配置信息
-            MchAppConfigContext mchAppConfigContext = configContextQueryService.queryMchInfoAndAppInfo(payOrder.getMchNo(), payOrder.getAppId());
-
-            ChannelRetMsg channelRetMsg = closeService.close(payOrder, mchAppConfigContext);
-            if(channelRetMsg == null){
-                log.error("channelRetMsg is null");
-                return null;
-            }
-
-            log.info("关闭订单[{}]结果为：{}", payOrderId, channelRetMsg);
-
-            // 关闭订单 成功
-            if(channelRetMsg.getChannelState() == ChannelRetMsg.ChannelState.CONFIRM_SUCCESS) {
-                payOrderService.updateIng2Close(payOrderId);
-            }else {
-                return ApiRes.customFail(channelRetMsg.getChannelErrMsg());
-            }
-
-            bizRes.setChannelRetMsg(channelRetMsg);
-        } catch (Exception e) {  // 关闭订单异常
-            log.error("error payOrderId = {}", payOrder.getPayOrderId(), e);
-            return null;
+        PayOrderCloseService.CloseResult closeResult = payOrderCloseService.close(payOrder);
+        if (closeResult != PayOrderCloseService.CloseResult.CLOSED) {
+            return ApiRes.customFail("订单关闭未确认: " + closeResult);
         }
+        bizRes.setChannelRetMsg(ChannelRetMsg.confirmSuccess(null));
 
         return ApiRes.okWithSign(bizRes, configContextQueryService.queryMchApp(rq.getMchNo(), rq.getAppId()).getAppSecret());
     }

@@ -6,7 +6,7 @@
   <groupId>com.jeequan</groupId> <!-- 组织名, 类似于包名 -->
   <artifactId>jeepay-components-oss</artifactId>  <!-- 项目名称 -->
   <packaging>jar</packaging> <!-- 项目的最终打包类型/发布形式, 可选[jar, war, pom, maven-plugin]等 -->
-  <version>${isys.version}</version> <!-- 项目当前版本号 -->
+  <version>2.4.0</version> <!-- 项目当前版本号 -->
   <description>Jeepay计全支付系统 [jeepay-components-oss]</description> <!-- 项目描述 -->
   <url>https://www.jeequan.com</url>
 
@@ -51,8 +51,8 @@
     </dependency>
 
     <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>javax.annotation-api</artifactId>
+      <groupId>jakarta.annotation</groupId>
+      <artifactId>jakarta.annotation-api</artifactId>
       <scope>provided</scope> <!-- 仅编译依赖该jar， 运行时存在 -->
     </dependency>
 

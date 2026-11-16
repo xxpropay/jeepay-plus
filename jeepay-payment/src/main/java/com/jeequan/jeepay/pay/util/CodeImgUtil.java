@@ -15,6 +15,8 @@
  */
 package com.jeequan.jeepay.pay.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.zxing.*;
@@ -49,6 +51,7 @@ import java.util.Map;
 * @site https://www.jeequan.com
 * @date 2021/6/8 17:54
 */
+@Slf4j
 public class CodeImgUtil {
 
 	private static final Logger _log = LoggerFactory.getLogger(CodeImgUtil.class);
@@ -319,9 +322,9 @@ public class CodeImgUtil {
             System.out.println("图片中格式：  ");
             System.out.println("encode： " + result.getBarcodeFormat());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("QR image encoding failed", e);
         } catch (NotFoundException e) {
-            e.printStackTrace();
+            log.error("QR image output failed", e);
         }
     }
 

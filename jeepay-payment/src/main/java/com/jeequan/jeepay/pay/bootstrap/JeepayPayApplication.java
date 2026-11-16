@@ -18,7 +18,9 @@ package com.jeequan.jeepay.pay.bootstrap;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.jeequan.jeepay.pay.config.SystemYmlConfig;
 import org.hibernate.validator.HibernateValidator;
 import org.mybatis.spring.annotation.MapperScan;
@@ -35,9 +37,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import java.util.Arrays;
 
 /**
@@ -79,18 +81,19 @@ public class JeepayPayApplication {
         converter.setFastJsonConfig(config);
 
         //设置响应的 Content-Type
-        converter.setSupportedMediaTypes(Arrays.asList(new MediaType[]{MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON_UTF8}));
+        converter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON));
         return new HttpMessageConverters(converter);
     }
 
     /** Mybatis plus 分页插件 **/
     @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+    public MybatisPlusInterceptor paginationInterceptor() {
+        MybatisPlusInterceptor paginationInterceptor = new MybatisPlusInterceptor();
         // 设置请求的页面大于最大页后操作， true调回到首页，false 继续请求  默认false
         // paginationInterceptor.setOverflow(false);
         // 设置最大单页限制数量，默认 500 条，-1 不受限制
         // paginationInterceptor.setLimit(500);
+        paginationInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return paginationInterceptor;
     }
 
@@ -114,7 +117,7 @@ public class JeepayPayApplication {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowCredentials(true);   //带上cookie信息
 //          config.addAllowedOrigin(CorsConfiguration.ALL);  //允许跨域的域名， *表示允许任何域名使用
-            config.addAllowedOriginPattern(CorsConfiguration.ALL);  //使用addAllowedOriginPattern 避免出现 When allowCredentials is true, allowedOrigins cannot contain the special value "*" since that cannot be set on the "Access-Control-Allow-Origin" response header. To allow credentials to a set of origins, list them explicitly or consider using "allowedOriginPatterns" instead.
+            config.setAllowedOrigins(systemYmlConfig.getCorsAllowedOrigins());
             config.addAllowedHeader(CorsConfiguration.ALL);   //允许任何请求头
             config.addAllowedMethod(CorsConfiguration.ALL);   //允许任何方法（post、get等）
             source.registerCorsConfiguration("/**", config); // CORS 配置对所有接口都有效

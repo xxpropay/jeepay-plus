@@ -2,8 +2,12 @@ server:
   port: 9216 #设置端口
 
 spring:
-  redis:
-    database: 3    #1库：运营平台  #2库：商户系统 #3库：支付网关
+  data:
+    redis:
+      database: 3    #1库：运营平台  #2库：商户系统 #3库：支付网关
+
+isys:
+  cors-allowed-origins: ${JEEPAY_CORS_ALLOWED_ORIGINS:http://localhost:9226}
 
 # knife4j APIDOC文档
 knife4j:

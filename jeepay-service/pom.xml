@@ -6,7 +6,7 @@
   <groupId>com.jeequan</groupId> <!-- 组织名, 类似于包名 -->
   <artifactId>jeepay-service</artifactId>  <!-- 项目名称 -->
   <packaging>jar</packaging> <!-- 项目的最终打包类型/发布形式, 可选[jar, war, pom, maven-plugin]等 -->
-  <version>${isys.version}</version> <!-- 项目当前版本号 -->
+  <version>2.4.0</version> <!-- 项目当前版本号 -->
   <description>Jeepay计全支付系统 [jeepay-service]</description> <!-- 项目描述 -->
   <url>https://www.jeequan.com</url>
 
@@ -26,21 +26,21 @@
 
     <!-- MySql 数据库连接包 -->
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
     </dependency>
 
     <!-- Druid 连接池 -->
     <dependency>
       <groupId>com.alibaba</groupId>
-      <artifactId>druid-spring-boot-starter</artifactId>
-      <version>1.2.6</version>
+      <artifactId>druid-spring-boot-3-starter</artifactId>
+      <version>${druid.version}</version>
     </dependency>
 
     <!-- orm映射框架：mybatis-plus,  自动引入spring-tx -->
     <dependency>
       <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus-boot-starter</artifactId>
+      <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
     </dependency>
 
     <!-- Spring Security -->

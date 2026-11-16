@@ -115,12 +115,20 @@ public class YsfpayPaymentService extends AbstractPaymentService {
     }
 
     /** 云闪付 bar下单请求统一发送参数 **/
-    public static void barParamsSet(JSONObject reqParams, PayOrder payOrder) {
+    public void barParamsSet(JSONObject reqParams, PayOrder payOrder, MchAppConfigContext mchAppConfigContext) {
         String orderType = YsfHttpUtil.getOrderTypeByBar(payOrder.getWayCode());
         reqParams.put("orderType", orderType); //订单类型： alipay-支付宝， wechat-微信支付， -unionpay银联二维码
         ysfPublicParams(reqParams, payOrder);
-        // TODO 终端编号暂时写死
-        reqParams.put("termId", "01727367"); // 终端编号
+        YsfpayIsvsubMchParams params = (YsfpayIsvsubMchParams) configContextQueryService
+                .queryIsvsubMchParams(mchAppConfigContext.getMchNo(), mchAppConfigContext.getAppId(), getIfCode());
+        applyTerminalId(reqParams, params);
+    }
+
+    static void applyTerminalId(JSONObject reqParams, YsfpayIsvsubMchParams params) {
+        if (params == null || StringUtils.isBlank(params.getTermId())) {
+            throw new BizException("云闪付终端号未配置");
+        }
+        reqParams.put("termId", params.getTermId().trim());
     }
 
     /** 云闪付公共参数赋值 **/

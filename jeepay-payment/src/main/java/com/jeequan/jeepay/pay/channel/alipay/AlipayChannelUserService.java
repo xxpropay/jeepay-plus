@@ -90,7 +90,7 @@ public class AlipayChannelUserService implements IChannelUserService {
         try {
             return configContextQueryService.getAlipayClientWrapper(mchAppConfigContext).execute(request).getUserId();
         } catch (ChannelException e) {
-            e.printStackTrace();
+            log.error("Alipay channel user authorization failed", e);
             return null;
         }
     }

@@ -43,9 +43,7 @@ public class ApiResBodyAdvice implements ResponseBodyAdvice {
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
 
-        // springfox.documentation.swagger.web.ApiResourceController    -- /swagger-resources
-        // springfox.documentation.swagger2.web.Swagger2ControllerWebMvc  -- /v2/api-docs
-        if(knife4jEnable && returnType.getMethod().getDeclaringClass().getName().startsWith("springfox.documentation.swagger")){
+        if(knife4jEnable && returnType.getMethod().getDeclaringClass().getName().startsWith("org.springdoc")){
             return false;
         }
 

@@ -2,10 +2,12 @@ server:
   port: 9218 #设置端口
 
 spring:
-  redis:
-    database: 2    #1库：运营平台  #2库：商户系统 #3库：支付网关
+  data:
+    redis:
+      database: 2    #1库：运营平台  #2库：商户系统 #3库：支付网关
 
 #系统业务参数
 isys:
-    jwt-secret: ARNXp4MzjOOQqxtv #生成jwt的秘钥。 要求每个系统有单独的秘钥管理机制。
+    jwt-secret: ${MERCHANT_JWT_SECRET} # 至少32字节，禁止提交真实密钥
+    cors-allowed-origins: ${JEEPAY_CORS_ALLOWED_ORIGINS:http://localhost:9228}
 

@@ -1,0 +1,12 @@
+.git
+.github
+.idea
+.vscode
+.worktrees
+**/target
+**/node_modules
+**/dist
+logs
+*.log
+.env
+jeepay-ui.user-backup-*

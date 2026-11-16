@@ -64,10 +64,10 @@ public class XxpayKit {
 			byte[] digestData = md.digest(data);
 			return toHex(digestData);
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			log.error("Channel protocol MD5 digest is unavailable", e);
 			return null;
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			log.error("Unsupported channel protocol charset: {}", charset, e);
 			return null;
 		}
 	}

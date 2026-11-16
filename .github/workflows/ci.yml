@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Deployment configuration checks
+        shell: pwsh
+        run: ./scripts/verify-deployment.ps1
+      - name: Security checks
+        shell: pwsh
+        run: ./scripts/verify-security.ps1
+      - name: Backend tests
+        run: ./mvnw -B test
+      - name: Install frontend dependencies
+        working-directory: jeepay-ui
+        run: npm install
+      - name: Build all frontends
+        working-directory: jeepay-ui
+        run: npm run build
+      - name: Validate Compose
+        run: docker compose --env-file .env.example config --quiet
