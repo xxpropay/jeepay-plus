@@ -1,4 +1,4 @@
-### 对比Jeepay开源版
+### 对比Jeepay开源版 
 JeepayPro是基于开源版Jeepay搭建，重构部分服务端代码，增加进件、代理商系统、商户通APP、展业宝APP等功能。
 
 先有开源版Jeepay，再有商业版JeepayPro。
