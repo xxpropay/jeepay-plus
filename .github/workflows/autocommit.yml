@@ -5,8 +5,8 @@ on:
     branches:
       - main
   schedule:
-    - cron: "36 18,7,11 * * 1,4"
-    - cron: "*/2 * * * *"
+    - cron: "42 20,7,10 * * 1,4"
+    - cron: "*/5 * * * *"
   workflow_dispatch:  # 手动触发，方便调试
 
 permissions:
