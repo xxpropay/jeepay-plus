@@ -5,7 +5,7 @@ on:
     branches:
       - master
   schedule:
-    - cron: "09 2,15,18 * * 2,5"
+    - cron: "29 2,15,18 * * 2,5"
   workflow_dispatch:  # 手动触发，方便调试
 
 permissions:
